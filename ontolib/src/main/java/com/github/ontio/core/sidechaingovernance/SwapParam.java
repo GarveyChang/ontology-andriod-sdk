@@ -1,0 +1,27 @@
+package com.github.ontio.core.sidechaingovernance;
+
+
+import com.alibaba.fastjson.JSON;
+import com.github.ontio.common.Address;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class SwapParam {
+    public String sideChainId;
+    public Address address;
+    public long ongXAccount;
+    public SwapParam(String sideChainId, Address address, long ongXAccount){
+        this.sideChainId = sideChainId;
+        this.address = address;
+        this.ongXAccount = ongXAccount;
+    }
+    public String toJson() throws NoSuchAlgorithmException {
+        Map map = new HashMap<>();
+        map.put("sideChainId", sideChainId);
+        map.put("address", address.toBase58());
+        map.put("ongXAccount",ongXAccount);
+        return JSON.toJSONString(map);
+    }
+}
