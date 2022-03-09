@@ -47,21 +47,21 @@ import java.util.List;
  * @date 2018/5/23
  */
 public class NativeBuildParams {
-    public static  byte[] buildParams(Object ...params) throws SDKException {
+    public static byte[] buildParams(Object... params) throws SDKException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BinaryWriter bw = new BinaryWriter(baos);
         try {
             for (Object param : params) {
-                if(param instanceof Integer){
+                if (param instanceof Integer) {
                     bw.writeInt(((Integer) param).intValue());
-                }else if(param instanceof byte[]){
-                    bw.writeVarBytes((byte[])param);
-                }else if(param instanceof String){
+                } else if (param instanceof byte[]) {
+                    bw.writeVarBytes((byte[]) param);
+                } else if (param instanceof String) {
                     bw.writeVarString((String) param);
-                }else if(param instanceof Attribute[]){
-                    bw.writeSerializableArray((Attribute[])param);
-                }else if(param instanceof Address){
-                    bw.writeSerializable((Address)param);
+                } else if (param instanceof Attribute[]) {
+                    bw.writeSerializableArray((Attribute[]) param);
+                } else if (param instanceof Address) {
+                    bw.writeSerializable((Address) param);
                 }
             }
         } catch (IOException e) {
@@ -71,6 +71,7 @@ public class NativeBuildParams {
         }
         return baos.toByteArray();
     }
+
     /**
      * @param builder
      * @param list
@@ -88,6 +89,8 @@ public class NativeBuildParams {
                     builder.emitPushInteger(BigInteger.valueOf((int) val));
                 } else if (val instanceof Long) {
                     builder.emitPushInteger(BigInteger.valueOf((Long) val));
+                } else if (val instanceof BigInteger) {
+                    builder.emitPushInteger((BigInteger) val);
                 } else if (val instanceof Address) {
                     builder.emitPushByteArray(((Address) val).toArray());
                 } else if (val instanceof String) {
@@ -111,7 +114,7 @@ public class NativeBuildParams {
                     for (int k = tmp.size() - 1; k >= 0; k--) {
                         List tmpList = new ArrayList();
                         tmpList.add(tmp.get(k));
-                        createCodeParamsScript(builder,tmpList );
+                        createCodeParamsScript(builder, tmpList);
                     }
                     builder.emitPushInteger(new BigInteger(String.valueOf(tmp.size())));
                     builder.pushPack();
@@ -124,11 +127,13 @@ public class NativeBuildParams {
         }
         return builder.toArray();
     }
+
     public static byte[] createCodeParamsScript(List<Object> list) {
         ScriptBuilder sb = new ScriptBuilder();
-        return createCodeParamsScript(sb,list);
+        return createCodeParamsScript(sb, list);
     }
-    public static byte[] serializeAbiFunction( AbiFunction abiFunction) throws Exception {
+
+    public static byte[] serializeAbiFunction(AbiFunction abiFunction) throws Exception {
         List list = new ArrayList<Object>();
         list.add(abiFunction.getName().getBytes());
         List tmp = new ArrayList<Object>();
@@ -155,7 +160,7 @@ public class NativeBuildParams {
                 throw new SDKException(ErrorCode.TypeError);
             }
         }
-        if(list.size()>0) {
+        if (list.size() > 0) {
             list.add(tmp);
         }
         byte[] params = createCodeParamsScript(list);
