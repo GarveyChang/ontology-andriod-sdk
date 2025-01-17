@@ -54,7 +54,7 @@ public class http {
         http.setRequestMethod("POST");
         http.setRequestProperty("Content-Type", "application/json");
         if (https) {
-            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+            SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, new TrustManager[]{new X509()}, new SecureRandom());
             SSLSocketFactory ssf = sslContext.getSocketFactory();
             ((HttpsURLConnection) http).setSSLSocketFactory(ssf);
@@ -90,7 +90,7 @@ public class http {
         http.setRequestMethod("DELETE");
         http.setRequestProperty("Content-Type", "application/json");
         if (https) {
-            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+            SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, new TrustManager[]{new X509()}, new SecureRandom());
             SSLSocketFactory ssf = sslContext.getSocketFactory();
             ((HttpsURLConnection) http).setSSLSocketFactory(ssf);
@@ -143,7 +143,7 @@ public class http {
         http.setRequestMethod("GET");
         http.setRequestProperty("Content-Type", "application/json");
         if (https) {
-            SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
+            SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, new TrustManager[]{new X509()}, new SecureRandom());
             SSLSocketFactory ssf = sslContext.getSocketFactory();
             ((HttpsURLConnection) http).setSSLSocketFactory(ssf);
